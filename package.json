@@ -1,0 +1,23 @@
+{
+  "name": "miniproj-net",
+  "version": "1.0.0",
+  "description": "miniproj-net",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maahhi/miniproj-net.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maahhi/miniproj-net/issues"
+  },
+  "homepage": "https://github.com/maahhi/miniproj-net#readme",
+  "dependencies": {
+    "restify": "^7.3.0",
+    "restify-plugins": "^1.6.0"
+  }
+}
