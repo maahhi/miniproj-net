@@ -4,11 +4,16 @@ const mongoose = require('mongoose');
 restify.plugins = require('restify-plugins');
 const config = require('./config');
 
+const rjwt = require('restify-jwt-community');
+const jwt = require('jsonwebtoken');
 
 var server = restify.createServer();
 
 server.use(restify.plugins.bodyParser());
 server.use(restify.plugins.fullResponse());
+server.use(rjwt(config.jwt).unless({
+  path: ['/login','/signup']
+}));
 
 server.listen(8080, function () {
   console.log('%s listening at %s', server.name, server.url);

@@ -2,6 +2,9 @@ const mongoose = require('mongoose');
 const User = require('../model/User');
 const errors = require('restify-errors');
 
+const config = require('../config');
+const rjwt = require('restify-jwt-community');
+const jwt = require('jsonwebtoken');
 
 module.exports = function(req, res, next){
     console.log(req.body);
@@ -26,7 +29,11 @@ module.exports = function(req, res, next){
         res.send("NOK");
 			  return next(new errors.UnauthorizedError());
       }
-			res.send("OK");
+      let token = jwt.sign({"username":varusername}, config.jwt.secret, {
+        expiresIn: '15m' // token expires in 15 minutes
+    });
+    jwt.decode(token);
+    res.send({"token":token, "displayname":doc.displayname});
 			next();
 		});
 };

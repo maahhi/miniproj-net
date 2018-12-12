@@ -5,5 +5,9 @@ module.exports = {
     port: process.env.PORT || 3000,
     db: {
         uri: 'mongodb://172.17.3.75/test'
-    }
+    },
+    
+    "jwt": {
+        "secret": "&@$!tibadodo!$@&"
+      }
 }
