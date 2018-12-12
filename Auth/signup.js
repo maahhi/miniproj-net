@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const User = require('../model/User');
+const errors = require('restify-errors');
 
 module.exports = function(req, res, next){
 
