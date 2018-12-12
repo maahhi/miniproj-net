@@ -33,7 +33,8 @@ module.exports = function(req, res, next){
         expiresIn: '15m' // token expires in 15 minutes
     });
     jwt.decode(token);
-    res.send({"token":token, "displayname":doc.displayname});
+    console.log(doc)
+    res.send({"token":token, "display_name":doc.display_name});
 			next();
 		});
 };
