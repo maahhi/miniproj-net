@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/maahhi/miniproj-net#readme",
   "dependencies": {
-    "mongodb": "^3.1.10",
+    "mongoose": "^5.3.16",
+    "mongoose-string-query": "^0.2.5",
+    "mongoose-timestamp": "^0.6.0",
     "restify": "^7.3.0",
     "restify-plugins": "^1.6.0"
   }
