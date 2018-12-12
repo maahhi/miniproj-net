@@ -13,7 +13,7 @@ server.use(restify.plugins.fullResponse());
 server.listen(8080, function () {
   console.log('%s listening at %s', server.name, server.url);
   mongoose.Promise = global.Promise;
-  mongoose.connect(config.db.uri);
+  mongoose.connect(config.db.uri, { useNewUrlParser: true });
 
   const db = mongoose.connection;
 
