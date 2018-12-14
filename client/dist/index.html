@@ -1,0 +1,34 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script>
+      function processFoo(data){
+        console.log("zzzz")
+      }
+        var source = new EventSource("/sse"); 
+        
+        source.onopen = function () { 
+          console.log("open shit!")
+        }; 
+        source.onerror = function () { console.log("Damn mf js!") }; 
+        
+        source.addEventListener("foo", function (event) { 
+          processFoo(event.data);
+        });
+        
+        source.onmessage = function (event) {  
+          log_message(event.id, event.data);
+          console.log("HA")
+          if (event.id == "CLOSE") {
+            source.close();
+          }
+        }
+        </script>
+</head>
+<body>
+    HIIII
+</body>
+</html>

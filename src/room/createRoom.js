@@ -1,6 +1,6 @@
 var uniqid = require('uniqid');
-var Room = require('./model/Room.js');
-var Rooms = require('./model/Rooms.js');
+var Room = require('../model/Room.js');
+var Rooms = require('../model/Rooms.js');
 
 module.exports = function(req, res, next){ 
     var room_id = uniqid();
