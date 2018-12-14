@@ -4,9 +4,13 @@ function contactController() {
   const Contact = require('../model/Contact');
   const User = require('../model/User');
   this.listContacts = function (req, res, next) {
-    res.send("HElloz");
-    next()
-  }
+    Contact.find({h: req.user.id})
+    .exec((err, docs) => {
+      res.send(docs);
+      next()
+    });
+  };
+  
   this.addContact = function (req, res, next) {
     var havalid = req.user.id;
     console.log(havalid);
