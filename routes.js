@@ -10,6 +10,8 @@ module.exports = function(server) {
 
   contact = require('./Controllers/contactController');
   // server.get('/contact', contact.listContacts);
-  // server.post('/addContact' /* put your callback here*/);
+  server.post('/addContact', contact.addContact);
+  
+
 
 };
