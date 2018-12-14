@@ -4,9 +4,10 @@ function contactController() {
   const Contact = require('../model/Contact');
   const User = require('../model/User');
   this.listContacts = function (req, res, next) {
-    Contact.find({h: req.user.id})
+    Contact.find({h: req.user.id}, 'p')
+    .populate('p', '_id username')
     .exec((err, docs) => {
-      res.send(docs);
+      res.send(docs.map(item => item.p));
       next()
     });
   };
