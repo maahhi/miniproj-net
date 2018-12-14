@@ -24,9 +24,9 @@
       login() {
         if (this.input.username !== "" && this.input.password !== "") {
           axios.post('http://localhost:8080/login', this.input)
-          .then((response) => {
+          .then(response => {
             console.log(response.data);
-            this.$parent.jwt = response.data;
+            this.$parent.jwt = response.data.token;
             this.$emit("authenticated", true);
             this.$router.replace({name: "home"});
           })

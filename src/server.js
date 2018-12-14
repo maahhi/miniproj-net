@@ -27,7 +27,7 @@ server.use(rjwt(config.jwt).unless({
 const cors = corsMiddleware({
   preflightMaxAge: 5, //Optional
   origins: ['http://localhost:8080', 'http://localhost:8081'],
-  allowHeaders: ['API-Token'],
+  allowHeaders: ['Authorization'],
   exposeHeaders: ['API-Token-Expiry']
 })
 
