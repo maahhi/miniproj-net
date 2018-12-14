@@ -1,3 +1,4 @@
+const plugins = require('restify-plugins');
 module.exports = function(server) {
 
   server.post('/signup', require('./Auth/signup.js'));
@@ -11,7 +12,13 @@ module.exports = function(server) {
   contact = require('./Controllers/contactController');
   server.get('/contact', contact.listContacts);
   server.post('/addContact', contact.addContact);
-  
 
+  server.get(
+  '/*',
+  plugins.serveStatic({
+    directory: './client/dist',
+    default: 'index.html'
+  })
+  )
 
 };
