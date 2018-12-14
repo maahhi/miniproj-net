@@ -8,7 +8,8 @@ module.exports = function(server) {
     next()
   });
 
-  // server.get('/contact', require('./Contact/get'));
+  contact = require('./Controllers/contactController');
+  // server.get('/contact', contact.listContacts);
   // server.post('/addContact' /* put your callback here*/);
 
 };
