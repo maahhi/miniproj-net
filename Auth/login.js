@@ -29,7 +29,7 @@ module.exports = function(req, res, next){
         res.send("NOK");
 			  return next(new errors.UnauthorizedError());
       }
-      let token = jwt.sign({"username":varusername}, config.jwt.secret, {
+      let token = jwt.sign({"username":varusername,"id":doc._id}, config.jwt.secret, {
         expiresIn: '15m' // token expires in 15 minutes
     });
     jwt.decode(token);
