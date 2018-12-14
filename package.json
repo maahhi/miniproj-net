@@ -18,11 +18,14 @@
   },
   "homepage": "https://github.com/maahhi/miniproj-net#readme",
   "dependencies": {
+    "jsonwebtoken": "^8.4.0",
     "mongoose": "^5.3.16",
     "mongoose-string-query": "^0.2.5",
     "mongoose-timestamp": "^0.6.0",
     "restify": "^7.3.0",
+    "restify-cors-middleware": "^1.1.1",
     "restify-errors": "^6.1.1",
+    "restify-jwt-community": "^1.0.9",
     "restify-plugins": "^1.6.0"
   }
 }
