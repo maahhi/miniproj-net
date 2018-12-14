@@ -2,10 +2,10 @@
   "name": "miniproj-net",
   "version": "1.0.0",
   "description": "miniproj-net",
-  "main": "server.js",
+  "main": "src/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "serve": "nodemon server.js"
+    "serve": "nodemon src/server.js"
   },
   "repository": {
     "type": "git",
