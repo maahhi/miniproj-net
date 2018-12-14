@@ -26,6 +26,7 @@
     "restify-cors-middleware": "^1.1.1",
     "restify-errors": "^6.1.1",
     "restify-jwt-community": "^1.0.9",
-    "restify-plugins": "^1.6.0"
+    "restify-plugins": "^1.6.0",
+    "uniqid": "^5.0.3"
   }
 }
