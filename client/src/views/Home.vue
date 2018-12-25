@@ -17,7 +17,9 @@
     },
 
     mounted() {
-      axios.get('http://localhost:8080/contact', {headers: { "Authorization": 'Bearer ' + this.$parent.jwt}})
+      axios.get('http://localhost:8080/contact', {
+        headers: { "Authorization": 'Bearer ' + window.sessionStorage.jwt }
+      })
       .then( response => {
         this.contactList = response.data
       })

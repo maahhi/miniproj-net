@@ -8,7 +8,7 @@
       function processFoo(data){
         console.log("zzzz")
       }
-        var source = new EventSource("/sse"); 
+        var source = new EventSource("/foo");
         
         source.onopen = function () { 
           console.log("open shit!")
@@ -20,8 +20,10 @@
         });
         
         source.onmessage = function (event) {  
-          log_message(event.id, event.data);
+          // log_message(event.id, event.data);
           console.log("HA")
+          console.log(event.id)
+          console.log(event.data)
           if (event.id == "CLOSE") {
             source.close();
           }
