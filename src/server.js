@@ -41,10 +41,6 @@ server.pre(cors.preflight)
 server.use(cors.actual)
 
 server.listen(8080, function () {
-  setInterval(function() {
-    console.log("shiit");
-    sse.send({ bar: 'baz' }, 'foo')
-  }, 2000);
   console.log('%s listening at %s', server.name, server.url);
   mongoose.Promise = global.Promise;
   mongoose.connect(config.db.uri, { useNewUrlParser: true });
