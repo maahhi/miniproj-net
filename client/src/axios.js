@@ -1,7 +1,16 @@
 import axios from 'axios'
 import router from './router'
 
-const API_URL = process.env.API_URL || 'http://localhost:8080/'
+const API_URL = process.env.API_URL || 'http://localhost:8080/';
+
+function parseError (messages) {
+  // error
+  if (messages) {
+    return Promise.reject(messages)
+  } else {
+    return Promise.reject({ message: ['no error message'] })
+  }
+}
 
 let axios_instance = axios.create({
   baseURL: API_URL,
@@ -16,8 +25,14 @@ axios_instance.interceptors.response.use(
   return response
 },
 error => {
-  if (error.response.status === 401) {
-    router.push({ name: 'login' })
+  if (error.response) {
+    if (error.response.status === 401 && error.config.url !== API_URL + "login") {
+      router.push({ name: 'login' })
+    }
+    else
+      return parseError(error.response.data)
+  } else {
+    return Promise.reject(error)
   }
 }
 );

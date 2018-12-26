@@ -10,16 +10,29 @@
                                 <v-spacer></v-spacer>
 
                             </v-toolbar>
-                            <v-card-text>
-                                <v-form>
-                                    <v-text-field prepend-icon="person" name="login" label="Login" type="text" v-model="input.username"></v-text-field>
-                                    <v-text-field id="password" prepend-icon="lock" name="password" label="Password" type="password" v-model="input.password"></v-text-field>
-                                </v-form>
-                            </v-card-text>
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn color="primary" @click="login">Login</v-btn>
-                            </v-card-actions>
+                            <v-alert
+                                    :value="!valid"
+                                    type="warning"
+                                    transition="scale-transition"
+                            >
+                                Username or Password is empty.
+                            </v-alert>
+                            <v-alert
+                                    :value="error"
+                                    type="error"
+                            >
+                                {{ error }}
+                            </v-alert>
+                            <v-form @submit.prevent="login">
+                                <v-card-text>
+                                        <v-text-field prepend-icon="person" name="login" label="Login" type="text" v-model="input.username"></v-text-field>
+                                        <v-text-field id="password" prepend-icon="lock" name="password" label="Password" type="password" v-model="input.password"></v-text-field>
+                                </v-card-text>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn type="submit" color="primary">Login</v-btn>
+                                </v-card-actions>
+                            </v-form>
                         </v-card>
                     </v-flex>
                 </v-layout>
@@ -36,25 +49,27 @@
         input: {
           username: "",
           password: ""
-        }
+        },
+        valid: true,
+        error: ""
       }
     },
     methods: {
       login() {
+        this.valid = true;
         if (this.input.username !== "" && this.input.password !== "") {
-          this.$http.post('http://localhost:8080/login', this.input)
+          this.$http.post('/login', this.input)
           .then(response => {
             console.log(response.data);
             window.sessionStorage.jwt = response.data.token;
             this.$emit("authenticated", true);
             this.$router.replace({name: "home"});
           })
-          .catch(function (err) {
-            console.log("NO LOGIN")
-            console.log(err)
+          .catch(err => {
+            this.error = err.message;
           });
         } else {
-          console.log("A username and password must be present");
+          this.valid = false
         }
       }
     }
