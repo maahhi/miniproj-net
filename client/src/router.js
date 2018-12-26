@@ -3,9 +3,10 @@ import MainView from './components/Main'
 import LoginView from './views/Login'
 
 import Router from 'vue-router'
-import Home from './views/Home.vue'
+import Home from './views/Home'
+import Chat from './views/Chat'
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   routes: [
@@ -18,8 +19,13 @@ export default new Router({
           path: '',
           name: 'home',
           component: Home
-        }
+        },
       ]
+    },
+    {
+      path: '/chat/:id',
+      name: 'Chat',
+      component: Chat
     },
     {
       path: '/about',

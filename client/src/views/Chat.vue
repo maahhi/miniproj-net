@@ -6,7 +6,7 @@
                     <v-toolbar color="indigo" dark>
                         <v-toolbar-side-icon></v-toolbar-side-icon>
 
-                        <v-toolbar-title>Inbox</v-toolbar-title>
+                        <v-toolbar-title>{{ $route.params.id }}</v-toolbar-title>
 
                         <v-spacer></v-spacer>
 
@@ -18,7 +18,9 @@
                             <v-icon>more_vert</v-icon>
                         </v-btn>
                     </v-toolbar>
-                    <router-view></router-view>
+                    <p>
+                        it's chat page
+                    </p>
                 </v-card>
             </v-flex>
         </v-layout>
@@ -27,7 +29,7 @@
 
 <script>
   export default {
-    name: "Main",
+    name: "Chat"
   }
 </script>
 

@@ -29,8 +29,6 @@
 </template>
 
 <script>
-  import axios from 'axios'
-
   export default {
     name: "Login",
     data() {
@@ -44,7 +42,7 @@
     methods: {
       login() {
         if (this.input.username !== "" && this.input.password !== "") {
-          axios.post('http://localhost:8080/login', this.input)
+          this.$http.post('http://localhost:8080/login', this.input)
           .then(response => {
             console.log(response.data);
             window.sessionStorage.jwt = response.data.token;

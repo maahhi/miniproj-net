@@ -1,13 +1,27 @@
 <template>
-    <div class="home">
-        IT's HOME!!!
+    <v-list>
+        <v-list-tile
+                v-for="item in contactList"
+                :key="item._id"
+                avatar
+                @click="openChat"
+        >
+            <v-list-tile-action>
+                <v-icon v-if="item.icon" color="pink">star</v-icon>
+            </v-list-tile-action>
 
-        <p v-for="item in contactList" :key="item._id">{{item}}</p>
-    </div>
+            <v-list-tile-content>
+                <v-list-tile-title v-text="item.username"></v-list-tile-title>
+            </v-list-tile-content>
+
+            <v-list-tile-avatar>
+                <img :src="item.avatar">
+            </v-list-tile-avatar>
+        </v-list-tile>
+    </v-list>
 </template>
 
 <script>
-    import axios from 'axios'
   export default {
     name: "Home",
     data() {
@@ -15,12 +29,19 @@
         contactList: []
       }
     },
-
+    methods: {
+      openChat: function (event) {
+        console.log("CLICK IN CONTACT");
+        console.log(event);
+        this.$router.push('/chat')
+      }
+    },
     mounted() {
-      axios.get('http://localhost:8080/contact', {
-        headers: { "Authorization": 'Bearer ' + window.sessionStorage.jwt }
+      this.$http.get('http://localhost:8080/contact', {
+        headers: {"Authorization": 'Bearer ' + window.sessionStorage.jwt}
       })
-      .then( response => {
+      .then(response => {
+        console.log(response.data)
         this.contactList = response.data
       })
     }
