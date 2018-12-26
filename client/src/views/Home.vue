@@ -4,7 +4,7 @@
                 v-for="item in contactList"
                 :key="item._id"
                 avatar
-                @click="openChat"
+                :to="/chat/ + item._id"
         >
             <v-list-tile-action>
                 <v-icon v-if="item.icon" color="pink">star</v-icon>
@@ -27,13 +27,6 @@
     data() {
       return {
         contactList: []
-      }
-    },
-    methods: {
-      openChat: function (event) {
-        console.log("CLICK IN CONTACT");
-        console.log(event);
-        this.$router.push('/chat')
       }
     },
     mounted() {
