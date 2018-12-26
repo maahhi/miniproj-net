@@ -35,7 +35,7 @@ function contactController() {
       var tmp = new Contact({ "h": havalid, "p": palangID })
       console.log(tmp)
 
-      Contact.find(tmp, function (err2, con) {
+      Contact.findOne(tmp, function (err2, con) {
         if (err2) {
           console.error(err2);
           return next(new errors.InternalError(err2.message));
