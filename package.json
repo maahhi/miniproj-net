@@ -18,16 +18,20 @@
   },
   "homepage": "https://github.com/maahhi/miniproj-net#readme",
   "dependencies": {
+    "delay": "^4.1.0",
     "jsonwebtoken": "^8.4.0",
     "mongoose": "^5.3.16",
     "mongoose-string-query": "^0.2.5",
     "mongoose-timestamp": "^0.6.0",
+    "node-rest-client": "^3.1.0",
     "restify": "^7.3.0",
     "restify-cors-middleware": "^1.1.1",
     "restify-errors": "^6.1.1",
     "restify-eventsource": "^2.0.0",
     "restify-jwt-community": "^1.0.9",
     "restify-plugins": "^1.6.0",
+    "socket.io": "^2.2.0",
+    "socket.io-client": "^2.2.0",
     "uniqid": "^5.0.3",
     "watershed": "^0.4.0"
   }
