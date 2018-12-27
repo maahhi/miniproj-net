@@ -15,10 +15,17 @@ function parseError (messages) {
 let axios_instance = axios.create({
   baseURL: API_URL,
   headers: {
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer ' + localStorage.token
+    'Content-Type': 'application/json'
   }
 });
+
+axios_instance.interceptors.request.use(
+(config) => {
+  config.headers.authorization = 'Bearer ' + window.sessionStorage.jwt;
+  return config;
+},
+error => Promise.reject(error)
+);
 
 axios_instance.interceptors.response.use(
 (response) => {
@@ -27,10 +34,12 @@ axios_instance.interceptors.response.use(
 error => {
   if (error.response) {
     if (error.response.status === 401 && error.config.url !== API_URL + "login") {
-      router.push({ name: 'login' })
+      router.replace({ name: 'login' })
     }
     else
+    {
       return parseError(error.response.data)
+    }
   } else {
     return Promise.reject(error)
   }

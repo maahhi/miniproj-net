@@ -22,21 +22,22 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex'
   export default {
     name: "Home",
     data() {
       return {
-        contactList: []
+
       }
     },
+    computed: {
+      ...mapState(['contactList'])
+    },
     mounted() {
-      this.$http.get('http://localhost:8080/contact', {
-        headers: {"Authorization": 'Bearer ' + window.sessionStorage.jwt}
-      })
-      .then(response => {
-        console.log(response.data)
-        this.contactList = response.data
-      })
+      if (this.$store.state.contactList === null) {
+        console.log("HIIII")
+        this.$store.commit('updateContacts')
+      }
     }
   }
 </script>
