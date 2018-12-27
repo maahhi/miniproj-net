@@ -14,12 +14,14 @@ var sse = eventsource({
 });
  
 var broadcast = sse.sender('foo');
-server.use(sse.middleware()) 
 
+server.acceptable.push('text/event-stream')
+server.use(restify.plugins.acceptParser(server.acceptable))
 server.use(restify.plugins.bodyParser());
 server.use(restify.plugins.fullResponse());
 server.use(rjwt(config.jwt).unless({
   path: [
+  '/sse',
   '/login',
   '/signup',
   '/',
@@ -39,6 +41,7 @@ const cors = corsMiddleware({
 
 server.pre(cors.preflight)
 server.use(cors.actual)
+server.use(sse.middleware()) 
 
 server.listen(8080, function () {
   setInterval(function() {
