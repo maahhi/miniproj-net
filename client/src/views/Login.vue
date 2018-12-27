@@ -62,6 +62,7 @@
           .then(response => {
             console.log(response.data);
             window.sessionStorage.jwt = response.data.token;
+            this.$store.commit("SET_USER", response.data.user)
             this.$emit("authenticated", true);
             this.$router.replace({name: "home"});
           })

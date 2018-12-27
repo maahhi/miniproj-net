@@ -1,10 +1,11 @@
 import Vue from 'vue'
-import MainView from './components/Main'
+// import MainView from './components/Main'
 import LoginView from './views/Login'
 
 import Router from 'vue-router'
 import Home from './views/Home'
 import Chat from './views/Chat'
+import addContact from './views/addContact'
 
 Vue.use(Router);
 
@@ -12,20 +13,19 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'main',
-      component: MainView,
-      children: [
-        {
-          path: '',
-          name: 'home',
-          component: Home
-        },
-      ]
+      name: 'home',
+      component: Home,
+
     },
     {
       path: '/chat/:id',
       name: 'Chat',
       component: Chat
+    },
+    {
+      path: '/addContact',
+      name: 'addContact',
+      component: addContact
     },
     {
       path: '/about',

@@ -1,43 +1,48 @@
 <template>
-    <v-list>
-        <v-list-tile
-                v-for="item in contactList"
-                :key="item._id"
-                avatar
-                :to="/chat/ + item._id"
-        >
-            <v-list-tile-action>
-                <v-icon v-if="item.icon" color="pink">star</v-icon>
-            </v-list-tile-action>
+    <v-app>
+        <v-layout row>
+            <v-flex xs12 sm6 offset-sm3>
+                <v-card>
+                    <v-toolbar color="indigo" dark>
+                        <v-toolbar-side-icon></v-toolbar-side-icon>
 
-            <v-list-tile-content>
-                <v-list-tile-title v-text="item.username"></v-list-tile-title>
-            </v-list-tile-content>
+                        <v-toolbar-title>Inbox</v-toolbar-title>
 
-            <v-list-tile-avatar>
-                <img :src="item.avatar">
-            </v-list-tile-avatar>
-        </v-list-tile>
-    </v-list>
+                        <v-spacer></v-spacer>
+
+                        <v-btn icon>
+                            <v-icon>search</v-icon>
+                        </v-btn>
+
+                        <v-btn icon>
+                            <v-icon>more_vert</v-icon>
+                        </v-btn>
+                    </v-toolbar>
+                    <chat-list></chat-list>
+                </v-card>
+                <v-container fluid grid-list-md></v-container>
+                <v-btn
+                        absolute
+                        dark
+                        fab
+                        buttom
+                        right
+                        color="pink"
+                        @click="$router.push('/addContact')"
+                >
+                    <v-icon>add</v-icon>
+                </v-btn>
+            </v-flex>
+        </v-layout>
+    </v-app>
 </template>
 
 <script>
-  import { mapState } from 'vuex'
+    import ChatList from '../components/Home/ChatList'
   export default {
     name: "Home",
-    data() {
-      return {
-
-      }
-    },
-    computed: {
-      ...mapState(['contactList'])
-    },
-    mounted() {
-      if (this.$store.state.contactList === null) {
-        console.log("HIIII")
-        this.$store.commit('updateContacts')
-      }
+    components: {
+      "chat-list": ChatList,
     }
   }
 </script>
