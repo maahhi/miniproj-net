@@ -11,15 +11,23 @@ export default new Vuex.Store({
       id: "",
       display_name: ""
     },
-    contactList: null
-  }
-  ,
+    contactList: [],
+    connected: false
+  },
+  getters: {
+    contactByID: state => id => {
+      return state.contactList.find(contact => contact._id === id)
+    }
+  },
   mutations: {
     SET_CONTACTS(state, contacts) {
       state.contactList = contacts
     },
     SET_USER(state, user) {
       state.me = user
+    },
+    SET_CONNECTED(state, connected) {
+      state.connected = connected
     }
   },
   actions: {

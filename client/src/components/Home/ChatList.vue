@@ -34,7 +34,7 @@
       ...mapState(['contactList'])
     },
     mounted() {
-      if (this.$store.state.contactList === null) {
+      if (this.$store.state.contactList.length === 0) {
         this.$store.dispatch('updateContacts')
       }
     }

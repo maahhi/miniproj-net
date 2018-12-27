@@ -6,7 +6,7 @@
                     <v-toolbar color="indigo" dark>
                         <v-toolbar-side-icon></v-toolbar-side-icon>
 
-                        <v-toolbar-title>Inbox</v-toolbar-title>
+                        <v-toolbar-title>{{ title }}</v-toolbar-title>
 
                         <v-spacer></v-spacer>
 
@@ -43,6 +43,14 @@
     name: "Home",
     components: {
       "chat-list": ChatList,
+    },
+    computed: {
+      title: function () {
+        if (this.$store.state.connected) {
+          return "Inbox"
+        }
+        else return "Connecting ..."
+      }
     }
   }
 </script>

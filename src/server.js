@@ -12,6 +12,16 @@ var sse = require('./sse.js')
  
 var broadcast = sse.sender('foo');
 
+const cors = corsMiddleware({
+  preflightMaxAge: 5, //Optional
+  origins: ['http://localhost:8080', 'http://localhost:8081'],
+  allowHeaders: ['Authorization'],
+  exposeHeaders: ['API-Token-Expiry']
+})
+
+server.pre(cors.preflight)
+server.use(cors.actual)
+
 server.acceptable.push('text/event-stream')
 server.use(restify.plugins.acceptParser(server.acceptable))
 server.use(sse.middleware()) 
@@ -30,16 +40,6 @@ server.use(rjwt(config.jwt).unless({
   '/favicon.ico'
   ]
 }));
-
-const cors = corsMiddleware({
-  preflightMaxAge: 5, //Optional
-  origins: ['http://localhost:8080', 'http://localhost:8081'],
-  allowHeaders: ['Authorization'],
-  exposeHeaders: ['API-Token-Expiry']
-})
-
-server.pre(cors.preflight)
-server.use(cors.actual)
 
 server.listen(8080, function () {
   setInterval(function() {
