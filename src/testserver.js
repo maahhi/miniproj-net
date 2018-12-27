@@ -6,29 +6,13 @@ var Room = require('./model/Room.js');
 var Rooms = require('./model/Rooms.js');
 
 
-server.get('/', function indexHTML(req, res, next) {
-    fs.readFile(__dirname + '/index.html', function (err, data) {
-        if (err) {
-            next(err);
-            return;
-        }
-
-        res.setHeader('Content-Type', 'text/html');
-        res.writeHead(200);
-        res.end(data);
-        next();
-    });
-});
-
 //create instance room
 var room_id = 123123;
 var creator_id = 1;
 let new_room = new Room(room_id,creator_id);
 Rooms[room_id] = new_room;
 
-const pathname = url.parse(request.url).pathname;
-console.log(pathname)
-io.sockets.on('connection', function (socket) {
+io.of('/test').on('connection', function (socket) {
     console.log('connection');
     //join
     socket.on('joinroom',function(data){
@@ -61,6 +45,8 @@ io.sockets.on('connection', function (socket) {
         }
     });
 });
+
+
 
 server.listen(8888, function () {
     console.log('socket.io server listening at %s', server.url);
