@@ -1,6 +1,5 @@
 var restify = require('restify');
 const mongoose = require('mongoose');
-var eventsource = require('restify-eventsource');
 restify.plugins = require('restify-plugins');
 const config = require('./config');
 
@@ -9,14 +8,14 @@ const jwt = require('jsonwebtoken');
 const corsMiddleware = require('restify-cors-middleware')
 
 var server = restify.createServer({handleUpgrades:true});
-var sse = eventsource({
-  connections: 2
-});
+var sse = require('./sse.js')
  
 var broadcast = sse.sender('foo');
 
 server.acceptable.push('text/event-stream')
 server.use(restify.plugins.acceptParser(server.acceptable))
+server.use(sse.middleware()) 
+
 server.use(restify.plugins.bodyParser());
 server.use(restify.plugins.fullResponse());
 server.use(rjwt(config.jwt).unless({
@@ -41,11 +40,9 @@ const cors = corsMiddleware({
 
 server.pre(cors.preflight)
 server.use(cors.actual)
-server.use(sse.middleware()) 
 
 server.listen(8080, function () {
   setInterval(function() {
-    console.log("shiit");
     sse.send({ bar: 'baz' }, 'foo')
   }, 2000);
   console.log('%s listening at %s', server.name, server.url);
