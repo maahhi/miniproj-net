@@ -8,7 +8,7 @@
       function processFoo(data){
         console.log("zzzz")
       }
-        var source = new EventSource("/foo");
+        var source = new EventSource("/sse/foo");
         
         source.onopen = function () { 
           console.log("open shit!")

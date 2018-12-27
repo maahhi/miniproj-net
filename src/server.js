@@ -43,7 +43,7 @@ server.use(cors.actual)
 
 server.listen(8080, function () {
   setInterval(function() {
-    sse.send({ bar: 'baz' }, 'foo')
+    sse.send({ bar: 'baz' }, 'sse/foo')
   }, 2000);
   console.log('%s listening at %s', server.name, server.url);
   mongoose.Promise = global.Promise;

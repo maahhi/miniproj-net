@@ -3,9 +3,13 @@ module.exports= function(req,res,next)
 {
     inviter= req.user.id;
     invited_users = req.body.invited_users;
+    console.log(invited_users)
+    var iu;
     for (iu in invited_users)
     {
-        sse.send({ room_id: req.body.room_id }, iu)
+        console.log(invited_users[iu])
+        sse.send({ room_id: req.body.room_id }, "sse/"+iu)
+        //+invited_users[iu])
     }
     res.send({"state":"user invited"})
     next();
