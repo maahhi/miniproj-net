@@ -80,3 +80,5 @@ typings/
 
 #idea files
 .idea
+
+yarn.lock

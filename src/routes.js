@@ -1,4 +1,7 @@
 const plugins = require('restify-plugins');
+const errors = require('restify-errors');
+const sse = require('./sse');
+
 module.exports = function(server) {
 
   server.post('/signup', require('./Auth/signup.js'));
@@ -10,6 +13,10 @@ module.exports = function(server) {
     res.send(req.user);
     next()
   });
+
+  server.get('/sse/:id', [sse.middleware() , (req, res, next) => {
+    return next(errors.MethodNotAllowedError("Only event-stream allowed"))
+  }]);
 
   contact = require('./Controllers/contactController');
   server.get('/contact', contact.listContacts);

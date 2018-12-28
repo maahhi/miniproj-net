@@ -4,7 +4,7 @@
                 v-for="item in contactList"
                 :key="item._id"
                 avatar
-                :to="/chat/ + item._id"
+                :to="{ name: 'Chat', params: {id: item._id}}"
         >
             <v-list-tile-action>
                 <v-icon v-if="item.icon" color="pink">star</v-icon>

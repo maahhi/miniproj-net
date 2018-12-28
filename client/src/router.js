@@ -20,7 +20,8 @@ export default new Router({
     {
       path: '/chat/:id',
       name: 'Chat',
-      component: Chat
+      component: Chat,
+      props: true
     },
     {
       path: '/addContact',

@@ -8,9 +8,6 @@ const jwt = require('jsonwebtoken');
 const corsMiddleware = require('restify-cors-middleware')
 
 var server = restify.createServer({handleUpgrades:true});
-var sse = require('./sse.js')
- 
-var broadcast = sse.sender('foo');
 
 const cors = corsMiddleware({
   preflightMaxAge: 5, //Optional
@@ -22,15 +19,14 @@ const cors = corsMiddleware({
 server.pre(cors.preflight)
 server.use(cors.actual)
 
-server.acceptable.push('text/event-stream')
-server.use(restify.plugins.acceptParser(server.acceptable))
-server.use(sse.middleware()) 
+// server.acceptable.push('text/event-stream')
+// server.use(restify.plugins.acceptParser(server.acceptable))
 
 server.use(restify.plugins.bodyParser());
 server.use(restify.plugins.fullResponse());
 server.use(rjwt(config.jwt).unless({
   path: [
-  '/sse',
+  /\/sse/i,
   '/login',
   '/signup',
   '/',
@@ -42,9 +38,6 @@ server.use(rjwt(config.jwt).unless({
 }));
 
 server.listen(8080, function () {
-  setInterval(function() {
-    sse.send({ bar: 'baz' }, 'sse/foo')
-  }, 2000);
   console.log('%s listening at %s', server.name, server.url);
   mongoose.Promise = global.Promise;
   mongoose.connect(config.db.uri, { useNewUrlParser: true });

@@ -6,7 +6,7 @@ module.exports = function(server) {
   var io = socketio.listen(server.server);
   var Room = require('../model/Room.js');
   var Rooms = require('../model/Rooms.js');
-  
+
 
 
 
@@ -21,6 +21,7 @@ io.of('/test').on('connection', function (socket) {
 
     //join
     socket.on('joinroom',function(data){
+        console.log("Somebody Joined");
         var clientID = data.clientID ;
         var roomID = data.roomID;
         var thisroom = Rooms[roomID];
@@ -43,6 +44,7 @@ io.of('/test').on('connection', function (socket) {
 
     //chating
     socket.on('msg', function (data) {
+        console.log("Somebody Sent message");
         console.log(data);
         var clientID = data.clientID ;
         var roomID = data.roomID;

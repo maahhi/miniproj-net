@@ -1,4 +1,6 @@
-var eventsource = require('restify-eventsource');
+const eventsource = require('restify-eventsource');
+
 module.exports = eventsource({
     connections: 2
   });
+

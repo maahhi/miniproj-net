@@ -8,7 +8,7 @@ module.exports= function(req,res,next)
     for (iu in invited_users)
     {
         console.log(invited_users[iu])
-        sse.send({ room_id: req.body.room_id }, "sse/" + invited_users[iu])
+        sse.send({ room_id: req.body.room_id, peer: inviter}, "sse/" + invited_users[iu])
     }
     res.send({"state":"user invited"})
     next();

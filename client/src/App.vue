@@ -14,7 +14,10 @@ export default {
   },
   methods: {
     sseHandler(data) {
-      console.log(data)
+      let parsedData = JSON.parse(data)
+      console.log(parsedData)
+      this.$router.push({ name: 'Chat', params: {id: parsedData.peer, invited: true, room: parsedData.room_id }});
+      this.$emit('invited', data.room_id);
     },
     createSSE() {
       let es = new EventSource("http://localhost:8080/sse/"+ this.$store.state.me.id);
@@ -28,7 +31,6 @@ export default {
       };
 
       es.onmessage = (event) => {
-
         if (event.id === "CLOSE") {
           es.close();
         }
