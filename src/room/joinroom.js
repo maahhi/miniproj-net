@@ -45,7 +45,6 @@ io.of('/test').on('connection', function (socket) {
 
     //chating
     socket.on('msg', function (data) {
-        let msg = new Message({sender_id:data.clientID, receiver_id: , text: data.msg});
         console.log("Somebody Sent message");
         console.log(data);
         var clientID = data.clientID ;

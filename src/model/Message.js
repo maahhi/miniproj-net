@@ -5,12 +5,12 @@ const timestamps = require('mongoose-timestamp');
 const MessageSchema = new mongoose.Schema(
     {
         sender_id: {
-            type: String,
+            type: mongoose.Schema.ObjectId,
             required: true,
             trim: true,
         },
         receiver_id: {
-            type: String,
+            type: mongoose.Schema.ObjectId,
             required: true,
             trim: true,
         },
