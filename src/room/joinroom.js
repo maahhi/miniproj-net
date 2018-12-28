@@ -6,6 +6,7 @@ module.exports = function(server) {
   var io = socketio.listen(server.server);
   var Room = require('../model/Room.js');
   var Rooms = require('../model/Rooms.js');
+  var Message = require('../model/Message.js')
 
 
 
@@ -44,6 +45,7 @@ io.of('/test').on('connection', function (socket) {
 
     //chating
     socket.on('msg', function (data) {
+        let msg = new Message({sender_id:data.clientID, receiver_id: , text: data.msg});
         console.log("Somebody Sent message");
         console.log(data);
         var clientID = data.clientID ;
@@ -57,6 +59,8 @@ io.of('/test').on('connection', function (socket) {
                     console.log(data,{from:clientID, in:roomID , msg:data.msg });
                     var othersocket = membersofthisroom[otherclient]
                     othersocket.emit('msgback',{from:clientID, in:roomID , msg:data.msg })
+                    let mssg = new Message({sender_id:data.clientID, receiver_id: otherclient, text: data.msg});
+                    mssg.save()
                 }
             }
         }
