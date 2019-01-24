@@ -72,6 +72,17 @@ module.exports = function (server) {
       else {
         console.log("Caller is not Online")
       }
+    });
+    socket.on('candidate', function (data) {
+      console.log("candidate received on server")
+      let receiverID = data.peer;
+
+      if(socketManager[receiverID]) {
+        socketManager[receiverID].emit('candidate', data)
+      }
+      else {
+        console.log("Caller is not Online")
+      }
     })
   })
 

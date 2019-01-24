@@ -72,6 +72,16 @@
         this.setRemoteDescription(data.offer);
         console.log("ANSWER RECEIVED!!")
       });
+      this.$store.state.socket.on('candidate', async (data) => {
+        try {
+          // eslint-disable-next-line no-unused-vars
+          const ignore = await this.peerConnection.addIceCandidate(data.candidate);
+          this.onAddIceCandidateSuccess();
+        } catch (e) {
+          this.onAddIceCandidateError(e);
+        }
+        console.log(`ICE candidate:\n${data.candidate ? data.candidate.candidate : '(null)'}`);
+      });
       if (this.isCaller) {
         console.log("it's Caller")
         navigator.mediaDevices.getUserMedia({"video": true})
@@ -92,8 +102,9 @@
       }
       else {
         console.log("it's Callee");
-        const servers = null;
+        var servers = { "iceServers": [{ "urls": "stun:stun.1.google.com:19302"}] };
         this.peerConnection = new RTCPeerConnection(servers);
+        this.peerConnection.onicecandidate = this.onIceCandidate
         this.peerConnection.ontrack = this.gotRemoteStream;
         this.peerConnection.ondatachannel = this.receiveChannelCallback;
         this.setRemoteDescription(this.offer)
@@ -106,37 +117,7 @@
       
     },
     methods: {
-      async getMedia() {
 
-        if (this.localStream) {
-          this.localVideo.srcObject = null;
-          this.localStream.getTracks().forEach(track => track.stop());
-        }
-        const audioSource = audioSelect.value;
-        console.log(`Selected audio source: ${audioSource}`);
-        const videoSource = videoSelect.value;
-        console.log(`Selected video source: ${videoSource}`);
-
-        const constraints = {
-          audio: {
-            optional: [{
-              sourceId: audioSource
-            }]
-          },
-          video: {
-            optional: [{
-              sourceId: videoSource
-            }]
-          }
-        };
-        console.log('Requested local stream');
-        try {
-          const userMedia = await navigator.mediaDevices.getUserMedia(constraints);
-          gotStream(userMedia);
-        } catch (e) {
-          console.log('navigator.getUserMedia error: ', e);
-        }
-      },
       gotStream: function(stream) {
         console.log('Received local stream');
         this.localVideo.srcObject = stream;
@@ -145,7 +126,7 @@
       createPeerConnection() {
         var servers = { "iceServers": [{ "urls": "stun:stun.1.google.com:19302"}] };
         this.peerConnection = new RTCPeerConnection(servers);
-
+        this.peerConnection.onicecandidate = this.onIceCandidate
       },
       async createOffer() {
         const offerOptions = {
@@ -223,6 +204,17 @@
           this.remoteVideo.srcObject = e.streams[0];
           console.log('Received remote stream');
         }
+      },
+      async onIceCandidate(event) {
+          this.$store.dispatch('sendCandidate', {peer: this.id, candidate: event.candidate})
+      },
+
+      onAddIceCandidateSuccess() {
+        console.log('AddIceCandidate success.');
+      },
+
+      onAddIceCandidateError(error) {
+        console.log(`Failed to add Ice Candidate: ${error.toString()}`);
       }
     }
   }

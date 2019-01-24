@@ -5,6 +5,9 @@ const CallModule = {
     },
     sendAnswer({rootState}, data) {
       rootState.socket.emit('answer', data)
+    },
+    sendCandidate({rootState}, data) {
+      rootState.socket.emit('candidate', data)
     }
   }
 };
