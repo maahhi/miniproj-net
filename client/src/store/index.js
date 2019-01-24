@@ -1,11 +1,18 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import axios from './axios'
+import axios from '../axios'
+import router from '../router'
 import io from 'socket.io-client';
+import ChatModule from './ChatModule'
+import CallModule from './CallModule'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+  modules: {
+    chat: ChatModule,
+    call: CallModule
+  },
   state: {
     me: {
       username: "",
@@ -13,14 +20,14 @@ export default new Vuex.Store({
       display_name: ""
     },
     contactList: [],
-    messages: {},
     connected: false,
     socket: null
   },
   getters: {
     contactByID: state => id => {
       return state.contactList.find(contact => contact._id === id)
-    }
+    },
+
   },
   mutations: {
     SET_CONTACTS(state, contacts) {
@@ -47,11 +54,11 @@ export default new Vuex.Store({
         console.log(err)
       })
     },
-    createWS({ commit }) {
+    createWS({ dispatch, commit }) {
       let socket = io.connect('http://localhost:8080/', {
         'query': 'token=' + window.sessionStorage.jwt
       });
-      commit('SET_SOCKET', socket)
+      commit('SET_SOCKET', socket);
       socket.on('connect', function () {
         commit('SET_CONNECTED', true)
       });
@@ -60,8 +67,19 @@ export default new Vuex.Store({
         throw new Error(msg.data.type);
       });
       socket.on('msgback', function (data) {
+        dispatch('receiveMessage', data);
         console.log(data)
       })
+      socket.on('offer', function (data) {
+        console.log("Offer received")
+        console.log(data)
+        router.push({name: 'Call', params: {
+          id: data.caller,
+            offer: data.offer,
+            isCaller: false
+          }})
+      })
+
     }
   }
 })

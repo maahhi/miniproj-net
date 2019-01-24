@@ -32,6 +32,7 @@
     "restify-plugins": "^1.6.0",
     "socket.io": "^2.2.0",
     "socket.io-client": "^2.2.0",
+    "socketio-jwt": "^4.5.0",
     "uniqid": "^5.0.3",
     "watershed": "^0.4.0"
   }

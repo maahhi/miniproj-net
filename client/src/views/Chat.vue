@@ -11,6 +11,9 @@
                             {{ PeerName }}
                         </v-toolbar-title>
                         <v-spacer></v-spacer>
+                        <v-btn icon @click="$router.push({ name: 'Call', params: { id: PeerID, isCaller: true} })">
+                            <v-icon>call</v-icon>
+                        </v-btn>
                         <v-btn icon>
                             <v-icon>search</v-icon>
                         </v-btn>
@@ -32,44 +35,28 @@
 
 <script>
   import Message from '../components/Chat/Message'
-  import io from 'socket.io-client';
   export default {
     name: "Chat",
-    props:{
-      invited: {
-        type: Boolean,
-        default: false
-      },
-      room: {
-        type: String
-      }
-    },
     components: {
       'message': Message,
     },
     data: function () {
       return {
-        content: "",
-        messages: [
-          {
-            user: "ehsan",
-            content: "Hi1"
-          },
-          {
-            user: "sadegh",
-            content: "Hi2"
-          }
-        ],
-        roomID: null,
-        socket: null
+        content: ""
       }
     },
     computed: {
+      messages: function() {
+        return this.$store.getters.messagesByID(this.$route.params.id)
+      },
+      socket() {
+        return this.$store.state.socket
+      },
       PeerID() {
         return this.$route.params.id
       },
       PeerName() {
-        let peer =  this.$store.getters.contactByID(this.PeerID);
+        let peer =  this.$store.getters.contactByID(this.$route.params.id);
         if (!peer)
           return "UNKNOWN"
         else
@@ -79,39 +66,6 @@
           else return peer.username
         }
 
-      }
-    },
-    mounted() {
-      if (!this.invited) {
-        console.log('Creating Room ...');
-        this.$http.post('/creatroom')
-        .then(response => {
-          console.log(response);
-          this.roomID  = response.data
-          return this.$http.post('/invite', { room_id: this.roomID, invited_users: [this.PeerID] });
-
-        })
-        .then(response => {
-          console.log(response);
-          this.socket = io('http://localhost:8080/test')
-          this.socket.emit('joinroom',{clientID : this.$store.state.me.id, roomID : this.roomID })
-
-          this.socket.on('msgback',function(data){
-            console.log('message recived');
-            console.log(data);
-          });
-        })
-      }
-      else {
-        this.roomID = this.room
-        this.socket = io('http://localhost:8080/test')
-        this.socket.emit('joinroom',{clientID : this.$store.state.me.id, roomID : this.roomID })
-
-        this.socket.on('msgback', data => {
-          console.log('message recived');
-          console.log(data);
-          this.messages.push({user: this.PeerName, content: data.msg})
-        });
       }
     },
     methods: {
@@ -127,7 +81,7 @@
       sendMessage () {
         console.log("z")
         if (this.content !== '') {
-          this.socket.emit('msg',{clientID : this.$store.state.me.id, roomID : this.roomID , msg : this.content})
+          this.$store.dispatch('sendMessage', { content: this.content, receiver_id: this.PeerID });
           // this.$store.dispatch('sendMessage', { username: this.username, content: this.content, date: new Date().toString(), chatID: this.id })
           this.content = ''
         }

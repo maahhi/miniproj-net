@@ -5,6 +5,7 @@ import LoginView from './views/Login'
 import Router from 'vue-router'
 import Home from './views/Home'
 import Chat from './views/Chat'
+import Call from './views/Call'
 import addContact from './views/addContact'
 
 Vue.use(Router);
@@ -20,7 +21,12 @@ export default new Router({
     {
       path: '/chat/:id',
       name: 'Chat',
-      component: Chat,
+      component: Chat
+    },
+    {
+      path: '/call/:id',
+      name: 'Call',
+      component: Call,
       props: true
     },
     {

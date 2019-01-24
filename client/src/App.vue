@@ -1,44 +1,44 @@
 <template>
   <transition name="slide-left">
-  <router-view @authenticated="createSSE"></router-view>
+  <router-view @authenticated="$store.dispatch('createWS')"></router-view>
   </transition>
 </template>
 
 <script>
-
-export default {
-  name: 'App',
-  data: function () {
-    return {
-    }
-  },
-  methods: {
-    sseHandler(data) {
-      let parsedData = JSON.parse(data)
-      console.log(parsedData)
-      this.$router.push({ name: 'Chat', params: {id: parsedData.peer, invited: true, room: parsedData.room_id }});
-      this.$emit('invited', data.room_id);
-    },
-    createSSE() {
-      let es = new EventSource("http://localhost:8080/sse/"+ this.$store.state.me.id);
-      es.onopen = () => {
-        this.$store.commit('SET_CONNECTED', true);
-        console.log("open shit!")
-      };
-      es.onerror = () => {
-        this.$store.commit('SET_CONNECTED', false);
-        console.log("Damn mf js!")
-      };
-
-      es.onmessage = (event) => {
-        if (event.id === "CLOSE") {
-          es.close();
-        }
-        else this.sseHandler(event.data)
+  export default {
+    name: 'App',
+    data: function () {
+      return {
+        socket: null
       }
     },
+    methods: {
+      sseHandler(data) {
+        let parsedData = JSON.parse(data)
+        console.log(parsedData)
+        this.$router.push({ name: 'Chat', params: {id: parsedData.peer, invited: true, room: parsedData.room_id }});
+        this.$emit('invited', data.room_id);
+      },
+      createSSE() {
+        let es = new EventSource("http://localhost:8080/sse/"+ this.$store.state.me.id);
+        es.onopen = () => {
+          this.$store.commit('SET_CONNECTED', true);
+          console.log("open shit!")
+        };
+        es.onerror = () => {
+          this.$store.commit('SET_CONNECTED', false);
+          console.log("Damn mf js!")
+        };
+
+        es.onmessage = (event) => {
+          if (event.id === "CLOSE") {
+            es.close();
+          }
+          else this.sseHandler(event.data)
+        }
+      },
+    }
   }
-}
 </script>
 
 <style>

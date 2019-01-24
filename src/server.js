@@ -51,7 +51,7 @@ server.listen(8080, function () {
 
   db.once('open', () => {
     require('./routes')(server);
-    require('./room/joinroom')(server);
+    require('./Controllers/chatController')(server);
     console.log(`Server is listening on port ${config.port}`);
 
     

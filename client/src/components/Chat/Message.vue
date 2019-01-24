@@ -1,8 +1,8 @@
 <template>
     <div>
-        <div class="message" v-for="(message,index) in messages" :key=index :class="{own: message.user === username}">
-            <div class="username" v-if="index>0 && messages[index-1].user != message.user">{{message.user}}</div>
-            <div class="username" v-if="index == 0">{{message.user}}</div>
+        <div class="message" v-for="(message,index) in messages" :key=index :class="{own: nameByID(message) === username}">
+            <div class="username" v-if="index>0 && messages[index-1].receiver_id != message.receiver_id">{{nameByID(message)}}</div>
+            <div class="username" v-if="index == 0">{{nameByID(message)}}</div>
             <div style="margin-top: 5px"></div>
             <div class="content">
                 <div v-html="message.content"></div>
@@ -24,6 +24,18 @@
       }
     },
     methods: {
+       nameByID(message) {
+        if (message.sender_id) {
+          let contact = this.$store.getters.contactByID(message.sender_id)
+          if (contact.display_name) {
+            return contact.display_name
+          }
+          else return contact.username
+        }
+        else {
+          return this.$store.state.me.username
+        }
+      },
       imageLoad () {
         // this.$emit('imageLoad')
       }
