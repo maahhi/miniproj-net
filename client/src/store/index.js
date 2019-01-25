@@ -75,7 +75,7 @@ export default new Vuex.Store({
     },
     createWS({ dispatch, commit, state }) {
       if(!state.socket) {
-        let socket = io.connect( process.env.VUE_APP_API_URL, {
+        let socket = io.connect( process.env.VUE_APP_SOCKET_URL, {
           'query': 'token=' + window.sessionStorage.jwt
         });
         commit('SET_SOCKET', socket);

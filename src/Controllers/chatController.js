@@ -6,7 +6,7 @@ const socketioJwt   = require("socketio-jwt");
 var socketManager = require('../model/SocketManager');
 
 module.exports = function (server) {
-  let io = socketio.listen(server.server);
+  let io = socketio(8090);
 
   io.use(socketioJwt.authorize({
     secret: config.jwt.secret,
