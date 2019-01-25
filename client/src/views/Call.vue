@@ -3,7 +3,7 @@
         <v-flex xs12 sm6>
             <v-toolbar color="indigo" dark>
                 <v-toolbar-side-icon></v-toolbar-side-icon>
-                <v-toolbar-title>Discover</v-toolbar-title>
+                <v-toolbar-title>{{$store.getters.nameByID(id)}}</v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-btn icon>
                     <v-icon>search</v-icon>
@@ -20,7 +20,7 @@
                             <v-card>
                                 <div id="remote">
                                     <h2>Remote</h2>
-                                    <video playsinline autoplay muted></video>
+                                    <video playsinline autoplay></video>
                                     <!--<h2>Offer SDP</h2>-->
                                     <!--<textarea v-model="answerSdpTextarea"></textarea>-->
                                     <br>
@@ -42,7 +42,15 @@
                         </v-flex>
                     </v-layout>
                 </v-container>
+
             </v-card>
+            <div v-if="!(isCaller || connected)">
+                <v-btn color="success" @click="createPeerConnection">Answer</v-btn>
+                <v-btn color="error">Reject</v-btn>
+            </div>
+            <div v-if="localStream">
+                <v-btn color="error" @click="hangUp"><v-icon>call_end</v-icon></v-btn>
+            </div>
         </v-flex>
     </v-layout>
 </template>
@@ -57,9 +65,11 @@
     ],
     data: function() {
       return {
+        localStream: null,
         localVideo: null,
         remoteVideo: null,
-        peerConnection: null
+        peerConnection: null,
+        connected: false
       }
     },
     mounted() {
@@ -77,15 +87,16 @@
       }
       else {
         console.log("it's Callee");
-        this.createPeerConnection()
       }
       
     },
     methods: {
       createPeerConnection(){
         console.log("CallAccept Received");
-        navigator.mediaDevices.getUserMedia({"video": true}, )
+        navigator.mediaDevices.getUserMedia({"video": true, "audio": true}, )
         .then((stream) => {
+          this.localStream = stream
+          this.localVideo.srcObject = stream
           this.peerConnection = new Peer({ initiator: this.isCaller, stream:stream })
         })
         .then(()=> {
@@ -110,9 +121,27 @@
         })
         .then(()=>{
           if(!this.isCaller){
-            this.$store.state.socket.emit("callAccept", { peer: this.id})
+            this.$store.state.socket.emit("callAccept", { peer: this.id});
+            this.connected = true
           }
         })
+      },
+      hangUp() {
+        this.remoteVideo.srcObject = null;
+        console.log('Ending call');
+        if(this.localStream)
+            this.localStream.getTracks().forEach(track => track.stop());
+        if(this.localPeerConnection)
+            this.localPeerConnection.close();
+        if(this.remotePeerConnection)
+            this.remotePeerConnection.close();
+        this.localPeerConnection = null;
+        this.remotePeerConnection = null;
+
+        this.$store.state.socket.off("signal")
+        this.$store.state.socket.off("callAccept")
+
+        this.$router.replace({name:'home'})
       }
 
     }
