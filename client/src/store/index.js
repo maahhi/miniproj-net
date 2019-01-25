@@ -70,12 +70,10 @@ export default new Vuex.Store({
         dispatch('receiveMessage', data);
         console.log(data)
       })
-      socket.on('offer', function (data) {
-        console.log("Offer received")
-        console.log(data)
+      socket.on('call', function (data) {
+        console.log("Call received")
         router.push({name: 'Call', params: {
-          id: data.caller,
-            offer: data.offer,
+          id: data.peer,
             isCaller: false
           }})
       })

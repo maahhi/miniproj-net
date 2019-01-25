@@ -49,39 +49,41 @@ module.exports = function (server) {
       })
     })
 
-    socket.on('offer', function (data) {
-      console.log("offer received on server")
-      data.caller = socket.decoded_token.id;
-      let receiverID = data.callee;
+    socket.on('call', function (data) {
+      console.log("call received on server");
+      let receiverID = data.peer;
+      data.peer = socket.decoded_token.id;
 
       if(socketManager[receiverID]) {
-        socketManager[receiverID].emit('offer', data)
+        socketManager[receiverID].emit('call', data)
       }
       else {
         console.log("Callee is not Online")
       }
     })
-    socket.on('answer', function (data) {
-      console.log("answer received on server")
-      data.callee = socket.decoded_token.id;
-      let receiverID = data.caller;
+
+    socket.on('callAccept', function (data) {
+      console.log("callAccept received on server");
+      let receiverID = data.peer;
+      data.peer = socket.decoded_token.id;
 
       if(socketManager[receiverID]) {
-        socketManager[receiverID].emit('answer', data)
+        socketManager[receiverID].emit('callAccept', data)
       }
       else {
         console.log("Caller is not Online")
       }
-    });
-    socket.on('candidate', function (data) {
-      console.log("candidate received on server")
+    })
+
+    socket.on('signal', function (data) {
+      console.log("signal received on server")
       let receiverID = data.peer;
 
       if(socketManager[receiverID]) {
-        socketManager[receiverID].emit('candidate', data)
+        socketManager[receiverID].emit('signal', data)
       }
       else {
-        console.log("Caller is not Online")
+        console.log("Somebody is not Online")
       }
     })
   })

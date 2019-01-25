@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "simple-peer": "^9.2.1",
     "socket.io-client": "^2.2.0",
     "vue": "^2.5.17",
     "vue-axios": "^2.1.4",
