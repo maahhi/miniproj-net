@@ -1,7 +1,7 @@
 import axios from 'axios'
 import router from './router'
 
-const API_URL = process.env.API_URL || 'http://localhost:8080/';
+const API_URL = process.env.VUE_APP_API_URL;
 
 function parseError (messages) {
   // error

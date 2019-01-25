@@ -45,6 +45,9 @@
         content: ""
       }
     },
+    mounted(){
+      this.$store.dispatch('getHistory', this.$route.params.id)
+    },
     computed: {
       messages: function() {
         return this.$store.getters.messagesByID(this.$route.params.id)
@@ -68,6 +71,11 @@
 
       }
     },
+    watch: {
+      messages: function() {
+        this.scrollToEnd()
+      }
+    },
     methods: {
       toggleEmojiPanel () {
         this.emojiPanel = !this.emojiPanel
@@ -76,7 +84,10 @@
 
       },
       scrollToEnd () {
-
+        this.$nextTick(() => {
+          var container = this.$el.querySelector('.chat-container')
+          container.scrollTop = container.scrollHeight
+        })
       },
       sendMessage () {
         console.log("z")

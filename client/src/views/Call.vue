@@ -84,7 +84,7 @@
     methods: {
       createPeerConnection(){
         console.log("CallAccept Received");
-        navigator.mediaDevices.getUserMedia({"video": true})
+        navigator.mediaDevices.getUserMedia({"video": true}, )
         .then((stream) => {
           this.peerConnection = new Peer({ initiator: this.isCaller, stream:stream })
         })

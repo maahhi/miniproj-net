@@ -10,6 +10,7 @@ module.exports = function(server) {
   server.post('/invite', require("./room/invite.js"))
 
   server.get('/whoami', (req, res, next) => {
+    req.user.display_name = ""
     res.send(req.user);
     next()
   });
@@ -18,12 +19,12 @@ module.exports = function(server) {
     return next(errors.MethodNotAllowedError("Only event-stream allowed"))
   }]);
 
-  contact = require('./Controllers/contactController');
+  let contact = require('./Controllers/contactController');
   server.get('/contact', contact.listContacts);
   server.post('/addContact', contact.addContact);
 
-  server.get('/history/:id')
-  server.get('/lastHistories' )
+  let history = require('./Controllers/messageController');
+  server.get('/history/:id', history.getHistory);
 
   server.get(
   '/*',

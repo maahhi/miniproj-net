@@ -51,6 +51,10 @@
         }
         else return "Connecting ..."
       }
+    },
+    mounted() {
+      this.$store.dispatch('createWS')
+      this.$store.dispatch('updateMyself')
     }
   }
 </script>

@@ -1,28 +1,10 @@
+import axios from '../axios'
+import Vue from "vue";
+
 const ChatModule = {
   state: {
     messages: {
-      "5c237b0db783eb196ec76484": [
-        {
-          receiver_id: "5c237b0db783eb196ec76484",
-          content: "Hi1"
-        },
-        {
-          sender_id: "5c237b0db783eb196ec76484",
-          receiver_id: "5c237acbb783eb196ec76482",
-          content: "Hi2"
-        }
-      ],
-      "5c237b558003314ad4cae29d": [
-        {
-          receiver_id: "5c237b558003314ad4cae29d",
-          content: "Bye1"
-        },
-        {
-          sender_id: "5c237b558003314ad4cae29d",
-          receiver_id: "5c237acbb783eb196ec76482",
-          content: "Bye2"
-        }
-      ]
+
     }
   },
   getters: {
@@ -32,30 +14,38 @@ const ChatModule = {
       }
       else return []
     },
-    lastMessageByID: state => id => {
-      if (state.messages[id]) {
-        let chatMessages = state.messages[id]
-        return chatMessages[chatMessages.length - 1]
+    lastMessageByID: (state, getters) => id => {
+      let chatMessages = getters.messagesByID(id);
+      if (chatMessages.length > 0) {
+        let lastMessage = chatMessages[chatMessages.length - 1];
+        return getters.nameByID(lastMessage.sender_id) + ": " + lastMessage.content
       }
       else return ""
     }
   },
   mutations: {
-    CREATE_MESSAGE_CONTAINER(state, id) {
-      if (!state.messages[id]) {
-        state.messages[id] = []
-      }
+    SET_MESSAGES(state, payload) {
+      Vue.set(state.messages, payload.id, payload.history)
     },
     ADD_MESSAGE(state, payload) {
       if (state.messages[payload.id]) {
         state.messages[payload.id].push(payload.message)
       }
       else {
-        state.messages[payload.id] = [payload.message]
+        Vue.set(state.messages, payload.id, [payload.message])
       }
     }
   },
   actions: {
+    getHistory({commit}, id) {
+      axios.get('/history/' + id)
+      .then(response => {
+        commit('SET_MESSAGES', {id: id, history: response.data})
+      })
+      .catch(err =>{
+        console.log(err)
+      })
+    },
     sendMessage({commit, rootState}, data) {
       commit('ADD_MESSAGE', { message: data, id: data.receiver_id });
       rootState.socket.emit('msg', data)
