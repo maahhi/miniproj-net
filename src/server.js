@@ -8,6 +8,8 @@ const jwt = require('jsonwebtoken');
 const corsMiddleware = require('restify-cors-middleware')
 
 var server = restify.createServer({handleUpgrades:true});
+require('./Controllers/chatController')(server);
+
 
 const cors = corsMiddleware({
   preflightMaxAge: 5, //Optional
@@ -51,7 +53,6 @@ server.listen(8080, function () {
 
   db.once('open', () => {
     require('./routes')(server);
-    require('./Controllers/chatController')(server);
     console.log(`Server is listening on port ${config.port}`);
 
     

@@ -98,7 +98,14 @@
             // got remote video stream, now let's show it in a video tag
             console.log('remote Stream Received')
             this.remoteVideo.srcObject = stream
-            this.remoteVideo.play()
+            var promise = this.remoteVideo.play()
+            promise
+            .then(()=> {
+              console.log("PLAYING")
+            })
+            .catch(()=> {
+                console.log("ERROR IN PLAYING")
+            })
           })
         })
         .then(()=>{

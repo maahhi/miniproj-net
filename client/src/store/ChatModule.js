@@ -41,6 +41,11 @@ const ChatModule = {
     }
   },
   mutations: {
+    CREATE_MESSAGE_CONTAINER(state, id) {
+      if (!state.messages[id]) {
+        state.messages[id] = []
+      }
+    },
     ADD_MESSAGE(state, payload) {
       if (state.messages[payload.id]) {
         state.messages[payload.id].push(payload.message)

@@ -35,9 +35,7 @@
       }
     },
     mounted() {
-      if (this.contactList.length === 0) {
-        this.$store.dispatch('updateContacts')
-      }
+      this.$store.dispatch('updateContacts')
     }
   }
 </script>

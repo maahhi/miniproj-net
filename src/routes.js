@@ -22,6 +22,9 @@ module.exports = function(server) {
   server.get('/contact', contact.listContacts);
   server.post('/addContact', contact.addContact);
 
+  server.get('/history/:id')
+  server.get('/lastHistories' )
+
   server.get(
   '/*',
   plugins.serveStatic({

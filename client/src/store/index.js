@@ -53,6 +53,7 @@ export default new Vuex.Store({
       .catch(err =>{
         console.log(err)
       })
+
     },
     createWS({ dispatch, commit }) {
       let socket = io.connect('http://localhost:8080/', {
@@ -66,7 +67,7 @@ export default new Vuex.Store({
         console.log("unauthorized: " + JSON.stringify(msg.data));
         throw new Error(msg.data.type);
       });
-      socket.on('msgback', function (data) {
+      socket.on('msgBack', function (data) {
         dispatch('receiveMessage', data);
         console.log(data)
       })
